@@ -18,7 +18,7 @@ Private Sub Class_Terminate()
   Set s = Nothing
 End Sub
 
-Public Property Set vsoShape(vsoShp as Shape)
+Public Property Set vsoShape(vsoShp As Shape)
   Set s = vsoShp
 End Property
 
@@ -27,80 +27,80 @@ Public Sub Delete()
   Set s = Nothing
 End Sub
 
-Public Property Get Name as String
+Public Property Get Name() As String
   Name = s.Name
 End Property
 
-Public Property Let Name(v as String)
+Public Property Let Name(v As String)
   s.Name = v
 End Property
 
-Public Property Get Width as Variant
+Public Property Get Width() As Variant
   Width = s.Cells("Width").Result("")
 End Property
 
-Public Property Let Width(v as Variant)
+Public Property Let Width(v As Variant)
   s.Cells("Width").FormulaForce = v
 End Property
 
-Public Property Get Height as Variant
+Public Property Get Height() As Variant
   Height = s.Cells("Height").Result("")
 End Property
 
-Public Property Let Height(v as Variant)
+Public Property Let Height(v As Variant)
   s.Cells("Height").FormulaForce = v
 End Property
 
-Public Property Get Angle as Variant
+Public Property Get Angle() As Variant
   Angle = s.Cells("Angle").Result("")
 End Property
 
-Public Property Let Angle(v as Variant)
+Public Property Let Angle(v As Variant)
   s.Cells("Angle").FormulaForce = v
 End Property
 
-Public Property Get PinX as Variant
+Public Property Get PinX() As Variant
   PinX = s.Cells("PinX").Result("")
 End Property
 
-Public Property Let PinX(v as Variant)
+Public Property Let PinX(v As Variant)
   s.Cells("PinX").FormulaForce = v
 End Property
 
-Public Property Get PinY as Variant
+Public Property Get PinY() As Variant
   PinY = s.Cells("PinY").Result("")
 End Property
 
-Public Property Let PinY(v as Variant)
+Public Property Let PinY(v As Variant)
   s.Cells("PinY").FormulaForce = v
 End Property
 
-Public Property Get LocPinX as Variant
+Public Property Get LocPinX() As Variant
   LocPinX = s.Cells("LocPinX").Result("")
 End Property
 
-Public Property Let LocPinX(v as Variant)
+Public Property Let LocPinX(v As Variant)
   s.Cells("LocPinX").FormulaForce = v
 End Property
 
-Public Property Get LocPinY as Variant
+Public Property Get LocPinY() As Variant
   LocPinY = s.Cells("LocPinY").Result("")
 End Property
 
-Public Property Let LocPinY(v as Variant)
+Public Property Let LocPinY(v As Variant)
   s.Cells("LocPinY").FormulaForce = v
 End Property
 
-Public Property Get FlipY as Variant
+Public Property Get FlipY() As Variant
   FlipY = s.Cells("FlipY").Result("")
 End Property
 
-Public Property Let FlipY(v as Variant)
+Public Property Let FlipY(v As Variant)
   s.Cells("FlipY").FormulaForce = v
 End Property
 
 ' 1-D Shape Cells
-Public Property Get BeginX as Variant
+Public Property Get BeginX() As Variant
   If s.CellExists("BeginX", visExistsLocally) = False Then
     BeginX = PinX - LocPinX
   Else
@@ -108,7 +108,7 @@ Public Property Get BeginX as Variant
   End If
 End Property
 
-Public Property Let BeginX(v as Variant)
+Public Property Let BeginX(v As Variant)
   If s.CellExists("BeginX", visExistsLocally) = False Then
     s.Cells("PinX").FormulaForce = v & "+" & LocPinX
   Else
@@ -116,7 +116,7 @@ Public Property Let BeginX(v as Variant)
   End If
 End Property
 
-Public Property Get BeginY as Variant
+Public Property Get BeginY() As Variant
   If s.CellExists("BeginY", visExistsLocally) = False Then
     BeginY = PinY - LocPinY
   Else
@@ -124,7 +124,7 @@ Public Property Get BeginY as Variant
   End If
 End Property
 
-Public Property Let BeginY(v as Variant)
+Public Property Let BeginY(v As Variant)
   If s.CellExists("BeginY", visExistsLocally) = False Then
     s.Cells("PinY").FormulaForce = v & "+" & LocPinY
   Else
@@ -132,7 +132,7 @@ Public Property Let BeginY(v as Variant)
   End If
 End Property
 
-Public Property Get EndX as Variant
+Public Property Get EndX() As Variant
   If s.CellExists("EndX", visExistsLocally) = False Then
     EndX = PinX + LocPinX
   Else
@@ -140,7 +140,7 @@ Public Property Get EndX as Variant
   End If
 End Property
 
-Public Property Let EndX(v as Variant)
+Public Property Let EndX(v As Variant)
   If s.CellExists("EndX", visExistsLocally) = False Then
     s.Cells("PinX").FormulaForce = v & "-" & LocPinX
   Else
@@ -148,7 +148,7 @@ Public Property Let EndX(v as Variant)
   End If
 End Property
 
-Public Property Get EndY as Variant
+Public Property Get EndY() As Variant
   If s.CellExists("EndY", visExistsLocally) = False Then
     EndY = PinY + LocPinY
   Else
@@ -156,7 +156,7 @@ Public Property Get EndY as Variant
   End If
 End Property
 
-Public Property Let EndY(v as Variant)
+Public Property Let EndY(v As Variant)
   If s.CellExists("EndY", visExistsLocally) = False Then
     s.Cells("PinY").FormulaForce = v & "-" & LocPinY
   Else
@@ -164,11 +164,50 @@ Public Property Let EndY(v as Variant)
   End If
 End Property
 
-Public Function GetCellRefName(CellName as String) as String
+Public Function GetCellRefName(CellName As String) As String
   GetCellRefName = s.Name & "!" & CellName
 End Function
 
-Public Sub SetPoint(Section as Integer, Row as Integer, X as Variant, Y as Variant)
+Public Sub SetPoint(Section As Integer, Row As Integer, X As Variant, Y As Variant)
   s.CellsSRC(Section, Row, visX).FormulaForce = X
   s.CellsSRC(Section, Row, visY).FormulaForce = Y
+End Sub
+
+' Expanded functions for vw_waves
+Public Sub AddUserCell(Name As String, Optional Prompt As String = "")
+  If s.CellExists("User." & Name, visExistsLocally) = False Then _
+    s.AddNamedRow visSectionUser, Name, visTagDefault
+
+  If Prompt <> "" Then s.Cells("User." & Name & ".Prompt").Formula = Prompt
+End Sub
+
+Public Sub SetUserCell(Name As String, v As Variant)
+  s.Cells("User." & Name).Formula = v
+End Sub
+
+Public Sub AddDataCell(Name As String, Optional Prompt As String = "")
+  If s.CellExists("Prop." & Name, visExistsLocally) = False Then _
+    s.AddNamedRow visSectionProp, Name, visTagDefault
+
+  If Prompt <> "" Then s.Cells("Prop." & Name & ".Prompt").Formula = Prompt
+End Sub
+
+Public Sub SetDataCell(Name As String, v As Variant, Optional Position As String = "")
+  If Position = "" Then
+    s.Cells("Prop." & Name).Formula = v
+  Else
+    s.Cells("Prop." & Name & "." & Position).Formula = v
+  End If
+End Sub
+
+Public Sub SetCell(Name As String, v As Variant)
+  If s.CellExists(Name, visExistsLocally) <> False Then
+    s.Cells(Name).FormulaForce = v
+  ElseIf s.CellExists("Prop." & Name, visExistsLocally) <> False Then
+    s.Cells("Prop." & Name).FormulaForce = v
+  ElseIf s.CellExists("User." & Name, visExistsLocally) <> False Then
+    s.Cells("User." & Name).FormulaForce = v
+  Else
+    Err.Raise vbObjectError + 512, "visio_shape_wrapper_c", "Cell: " & Name & " not found!"
+  End If
 End Sub
