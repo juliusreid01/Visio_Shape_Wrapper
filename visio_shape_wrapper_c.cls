@@ -164,50 +164,7 @@ Public Property Let EndY(v As Variant)
   End If
 End Property
 
-Public Function GetCellRefName(CellName As String) As String
-  GetCellRefName = s.Name & "!" & CellName
-End Function
-
 Public Sub SetPoint(Section As Integer, Row As Integer, X As Variant, Y As Variant)
   s.CellsSRC(Section, Row, visX).FormulaForce = X
   s.CellsSRC(Section, Row, visY).FormulaForce = Y
-End Sub
-
-' Expanded functions for vw_waves
-Public Sub AddUserCell(Name As String, Optional Prompt As String = "")
-  If s.CellExists("User." & Name, visExistsLocally) = False Then _
-    s.AddNamedRow visSectionUser, Name, visTagDefault
-
-  If Prompt <> "" Then s.Cells("User." & Name & ".Prompt").Formula = Prompt
-End Sub
-
-Public Sub SetUserCell(Name As String, v As Variant)
-  s.Cells("User." & Name).Formula = v
-End Sub
-
-Public Sub AddDataCell(Name As String, Optional Prompt As String = "")
-  If s.CellExists("Prop." & Name, visExistsLocally) = False Then _
-    s.AddNamedRow visSectionProp, Name, visTagDefault
-
-  If Prompt <> "" Then s.Cells("Prop." & Name & ".Prompt").Formula = Prompt
-End Sub
-
-Public Sub SetDataCell(Name As String, v As Variant, Optional Position As String = "")
-  If Position = "" Then
-    s.Cells("Prop." & Name).Formula = v
-  Else
-    s.Cells("Prop." & Name & "." & Position).Formula = v
-  End If
-End Sub
-
-Public Sub SetCell(Name As String, v As Variant)
-  If s.CellExists(Name, visExistsLocally) <> False Then
-    s.Cells(Name).FormulaForce = v
-  ElseIf s.CellExists("Prop." & Name, visExistsLocally) <> False Then
-    s.Cells("Prop." & Name).FormulaForce = v
-  ElseIf s.CellExists("User." & Name, visExistsLocally) <> False Then
-    s.Cells("User." & Name).FormulaForce = v
-  Else
-    Err.Raise vbObjectError + 512, "visio_shape_wrapper_c", "Cell: " & Name & " not found!"
-  End If
 End Sub
